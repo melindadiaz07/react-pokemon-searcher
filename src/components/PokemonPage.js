@@ -7,7 +7,16 @@ import { Container } from 'semantic-ui-react'
 class PokemonPage extends React.Component {
 
   state = {
-    pokemons: []
+    pokemons: [],
+    searchInput:""
+  }
+
+
+  handleSearch = (event) => {
+
+    this.setState({
+      searchInput: event.target.value
+    })
   }
 
   componentDidMount(){
@@ -28,9 +37,9 @@ class PokemonPage extends React.Component {
         <br />
         <PokemonForm />
         <br />
-        <Search />
+        <Search searchInfo={this.handleSearch} />
         <br />
-        <PokemonCollection pokemons={this.state.pokemons}/>
+        <PokemonCollection pokemons={this.state.pokemons} searchInput={this.state.searchInput}/>
       </Container>
     )
   }
