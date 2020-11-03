@@ -8,7 +8,8 @@ class PokemonPage extends React.Component {
 
   state = {
     pokemons: [],
-    searchInput:""
+    searchInput:"",
+    newPokemon: {}
   }
 
 
@@ -26,7 +27,20 @@ class PokemonPage extends React.Component {
       this.setState({
         pokemons: pokeData
       })
-      
+    })
+  }
+
+  createNewPoke = (pokeObject) => {
+      fetch("http://localhost:3000/pokemon", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(pokeObject)
+      })
+      .then(res => res.json())
+      .then(poke => {
+        this.setState({
+          pokemons: [...this.state.pokemons, poke]
+        })
       })
   }
 
@@ -35,11 +49,11 @@ class PokemonPage extends React.Component {
       <Container>
         <h1>Pokemon Searcher</h1>
         <br />
-        <PokemonForm />
+        <PokemonForm  sendToForm={this.createNewPoke} />
         <br />
         <Search searchInfo={this.handleSearch} />
         <br />
-        <PokemonCollection pokemons={this.state.pokemons} searchInput={this.state.searchInput}/>
+        <PokemonCollection pokemons={this.state.pokemons} searchInput={this.state.searchInput} />
       </Container>
     )
   }
